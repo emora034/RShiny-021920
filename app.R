@@ -8,13 +8,17 @@
 #
 
 library(shiny)
+library(tidyverse)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
    
-   # Application title
-   titlePanel("This is a new Shiny app"),
-   
+  # Application title
+  titlePanel("This is a new Shiny app"),
+  includeMarkdown("references.md"),
+  h3("Plots"),
+  plotOutput(outputId = "plot")
+  )
    # Sidebar with a slider input for number of bins 
    sidebarLayout(
       sidebarPanel(
@@ -30,11 +34,15 @@ ui <- fluidPage(
          plotOutput("distPlot")
       )
    )
-)
+
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-   
+  output$plot <- renderPlot({
+    ggplot(msleep, aes(bodywt, sleep_total, colour = vore)) +
+      scale_x_log10() +
+      geom_point() + facet_wrap(~ vore, nrow = 2)
+  })
    output$distPlot <- renderPlot({
       # generate bins based on input$bins from ui.R
       x    <- faithful[, 2] 
