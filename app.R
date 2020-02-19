@@ -55,7 +55,13 @@ col_scale <- scale_colour_discrete(limits = unique(msleep$vore))
     ggplot(msleep %>% filter(vore == input$select), aes(bodywt, sleep_total, colour = vore)) +
       scale_x_log10() +
       col_scale +
-      geom_point()  })
+      geom_point() 
+       if(input$select != ""){
+         ggplot(msleep %>% filter(vore == input$select), aes(bodywt, sleep_total, colour = vore)) +
+           scale_x_log10() +
+           col_scale +
+           geom_point()
+       }})
    output$distPlot <- renderPlot({
       # generate bins based on input$bins from ui.R
       x    <- faithful[, 2] 
